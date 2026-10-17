@@ -7,7 +7,8 @@
       name="description"
       content="你好，我是林屿。一名热爱设计与创造的独立创作者，这是我的个人作品集。"
     />
-    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="theme-color" content="#263d2b" />
+    <link rel="preload" as="image" href="hero-meadow.jpg" fetchpriority="high" />
     <title>林屿 — 设计与创造</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -48,7 +49,12 @@
     </header>
 
     <main>
-      <section class="hero section-shell" id="home">
+      <!-- 花草溪流首屏：文字仍为原模板内容，可后续替换。 -->
+      <section class="hero section-shell meadow-hero" id="home">
+        <div class="meadow-scene" aria-hidden="true">
+          <img src="hero-meadow.jpg" alt="" width="1672" height="941" fetchpriority="high" />
+        </div>
+        <div class="meadow-shade" aria-hidden="true"></div>
         <div class="hero-copy">
           <p class="eyebrow"><span class="eyebrow-line"></span> DESIGNER &amp; CREATOR</p>
           <h1>你好，我是林屿。<br />让想法<span class="highlight">变成</span>现实。</h1>
@@ -69,19 +75,9 @@
           </div>
         </div>
 
-        <div class="hero-art" aria-label="抽象创意插画" role="img">
-          <div class="art-orbit art-orbit-one"></div>
-          <div class="art-orbit art-orbit-two"></div>
-          <div class="art-sun"></div>
-          <div class="art-card">
-            <span class="art-card-label">A LITTLE NOTE</span>
-            <span class="art-card-title">Stay<br />curious.</span>
-            <span class="art-card-footer">探索 · 创造 · 分享</span>
-          </div>
-          <span class="art-spark art-spark-one">✳</span>
-          <span class="art-spark art-spark-two">✳</span>
-          <span class="art-caption">把好奇心，变成作品。</span>
-          <span class="art-index">01 — 24</span>
+        <div class="meadow-footer">
+          <span class="meadow-caption">山野之间，灵感生长。</span>
+          <button class="motion-toggle" type="button" aria-pressed="false">暂停背景动效</button>
         </div>
       </section>
 

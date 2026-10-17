@@ -22,3 +22,21 @@ if (menuToggle && siteNav) {
 if (currentYear) {
   currentYear.textContent = String(new Date().getFullYear());
 }
+
+// 用户可随时暂停背景；离开当前标签页时也暂停，减少无效动画。
+const meadow = document.querySelector('.meadow-hero');
+const motionToggle = document.querySelector('.motion-toggle');
+let motionPaused = false;
+function updateMeadowMotion() {
+  if (meadow) meadow.classList.toggle('is-paused', motionPaused || document.hidden);
+}
+if (meadow && motionToggle) {
+  motionToggle.addEventListener('click', () => {
+    motionPaused = !motionPaused;
+    motionToggle.setAttribute('aria-pressed', String(motionPaused));
+    motionToggle.textContent = motionPaused ? '播放背景动效' : '暂停背景动效';
+    updateMeadowMotion();
+  });
+  document.addEventListener('visibilitychange', updateMeadowMotion);
+  updateMeadowMotion();
+}
