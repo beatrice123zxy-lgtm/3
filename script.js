@@ -23,20 +23,25 @@ if (currentYear) {
   currentYear.textContent = String(new Date().getFullYear());
 }
 
-// 用户可随时暂停背景；离开当前标签页时也暂停，减少无效动画。
-const meadow = document.querySelector('.meadow-hero');
-const motionToggle = document.querySelector('.motion-toggle');
-let motionPaused = false;
-function updateMeadowMotion() {
-  if (meadow) meadow.classList.toggle('is-paused', motionPaused || document.hidden);
-}
-if (meadow && motionToggle) {
-  motionToggle.addEventListener('click', () => {
-    motionPaused = !motionPaused;
-    motionToggle.setAttribute('aria-pressed', String(motionPaused));
-    motionToggle.textContent = motionPaused ? '播放背景动效' : '暂停背景动效';
-    updateMeadowMotion();
-  });
-  document.addEventListener('visibilitychange', updateMeadowMotion);
-  updateMeadowMotion();
-}
+// 背景仅在桌面、允许动态效果且当前页面可见时播放。
+(() => {
+ const video = document.querySelector('.lume-hero__video');
+ const toggle = document.querySelector('.lume-video-toggle');
+ if (!video || !toggle) return;
+ const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+ const mobile = matchMedia('(max-width: 820px)');
+ let pausedByUser = false;
+ function syncVideo() {
+  const shouldPlay = !reduce.matches && !mobile.matches && !document.hidden && !pausedByUser;
+  if (shouldPlay) { const play = video.play(); if(play) play.catch(() => {}); }
+  else video.pause();
+  toggle.textContent = pausedByUser ? '播放视频' : '暂停视频';
+  toggle.setAttribute('aria-pressed', String(pausedByUser));
+ }
+ video.addEventListener('playing', () => video.classList.add('lume-is-ready'));
+ toggle.addEventListener('click', () => { pausedByUser = !pausedByUser; syncVideo(); });
+ reduce.addEventListener('change', syncVideo);
+ mobile.addEventListener('change', syncVideo);
+ document.addEventListener('visibilitychange', syncVideo);
+ syncVideo();
+})();
