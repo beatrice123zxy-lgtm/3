@@ -18,7 +18,18 @@ function node(tag, text, className) {
 function formatDate(date) {return new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(date));}
 export function renderBlocks(blocks,container) {
   for(const block of blocks) {
-    if(!block || typeof block.text!=='string') continue;
+    if(!block) continue;
+    if(block.type==='image') {
+      // Article pictures are local assets only, never executable or external URLs.
+      if(typeof block.src!=='string' || !/^images\/[a-z0-9][a-z0-9._-]*\.(?:jpe?g|png|webp)$/i.test(block.src)) continue;
+      const figure=node('figure',undefined,'reading-figure');
+      const image=node('img');image.src=block.src;image.alt=typeof block.alt==='string'?block.alt:'';
+      image.loading='lazy';image.decoding='async';image.width=1536;image.height=1024;
+      figure.append(image);
+      if(typeof block.caption==='string' && block.caption.trim()) figure.append(node('figcaption',block.caption));
+      container.append(figure);continue;
+    }
+    if(typeof block.text!=='string') continue;
     if(block.type==='list') {
       const list=node('ul');
       block.text.split('\n').filter(Boolean).forEach(text=>list.append(node('li',text)));

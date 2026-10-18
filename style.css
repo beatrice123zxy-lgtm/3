@@ -1462,3 +1462,9 @@ body.entry-active { overflow: hidden; }
 .entry-screen.is-motion-paused .entry-atmosphere * {animation-play-state:paused!important;}
 @media(max-width:600px){.entry-firefly:nth-of-type(n+11){display:none;}.entry-haze{opacity:.12;}}
 @media(prefers-reduced-motion:reduce){.entry-atmosphere{display:none;}}
+
+/* 长文中的原创 Q 版配图 */
+.reading-figure {margin:36px 0 44px;}
+.reading-figure img {display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:10px;background:#f1eddf;}
+.reading-figure figcaption {margin-top:12px;color:#91977f;font-size:10px;line-height:1.9;text-align:center;letter-spacing:.02em;}
+@media(max-width:600px){.reading-figure {margin-block:28px 34px;}.reading-figure img{border-radius:7px;}.reading-figure figcaption{font-size:9px;padding-inline:5px;}}
