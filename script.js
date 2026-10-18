@@ -35,6 +35,10 @@
   document.addEventListener('visibilitychange',syncEntryVideo);
   reduce.addEventListener('change',syncEntryVideo);
   syncEntryVideo();
+  try {
+    const previous = document.referrer ? new URL(document.referrer) : null;
+    if (previous && previous.origin === location.origin && previous.pathname.endsWith('/article.html') && location.hash === '#articles') enter.click();
+  } catch {}
 })();
 
 function cleanAssistantAnswer(text) {
