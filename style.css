@@ -1478,9 +1478,8 @@ body.entry-active { overflow: hidden; }
 .articles-empty p {position:relative;z-index:1;margin:0;color:#78806e;font-size:12px;line-height:1.9;}
 .articles-empty-signature {display:inline-block;position:relative;z-index:1;margin-top:30px;font-size:11px;color:#627658;}
 .articles-empty-signature span {margin-left:12px;}
-.article-list-item {display:grid;grid-template-columns:90px minmax(0,1fr) 40px;gap:24px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start;}
+.article-list-item {display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:24px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start;}
 .article-list-item:first-child {border-top:1px solid var(--line);}
-.article-list-meta {padding-top:4px;color:#858c7d;font:10px/1.8 var(--sans);}
 .article-list-item h3 {margin:0 0 11px;font-size:21px;font-weight:500;line-height:1.6;letter-spacing:-.025em;}
 .article-list-item:hover h3 {color:#55744c;}
 .article-list-item p {margin:0;color:#7c8273;font-size:12px;line-height:1.9;}
@@ -1505,4 +1504,4 @@ body.entry-active { overflow: hidden; }
 .reading-end {margin-top:52px;padding-top:25px;border-top:1px solid var(--line);font-size:11px;color:#8a927e;display:flex;justify-content:space-between;gap:20px;}
 .reading-status {padding:55px 0;}
 .reading-status p {font-size:13px;color:#7b8571;line-height:2;}
-@media(max-width:600px){.articles-section {padding-block:62px 68px;}.articles-empty{padding:30px 24px;}.articles-empty h3{font-size:22px;}.articles-empty::after{right:12px;}.article-list-item {grid-template-columns:1fr 30px;gap:7px 14px;padding:25px 0;}.article-list-meta{grid-column:1/-1;}.article-list-item h3{font-size:19px;}.article-list-tags{margin-top:12px;}.reading-header{padding:23px 22px;}.reading-main{padding:53px 24px 70px;}.reading-body{font-size:14px;}.reading-end{flex-direction:column;gap:12px;}}
+@media(max-width:600px){.articles-section {padding-block:62px 68px;}.articles-empty{padding:30px 24px;}.articles-empty h3{font-size:22px;}.articles-empty::after{right:12px;}.article-list-item {grid-template-columns:1fr 30px;gap:7px 14px;padding:25px 0;}.article-list-item h3{font-size:19px;}.article-list-tags{margin-top:12px;}.reading-header{padding:23px 22px;}.reading-main{padding:53px 24px 70px;}.reading-body{font-size:14px;}.reading-end{flex-direction:column;gap:12px;}}
