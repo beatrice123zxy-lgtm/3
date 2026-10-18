@@ -1412,3 +1412,53 @@ p {
 @media(max-width:600px){.xy-chat {right:12px;bottom:88px;width:calc(100vw - 24px);height:min(630px,calc(100dvh - 108px));border-radius:19px;}.xy-launcher {right:16px;bottom:18px;padding:13px 16px;}.xy-chat-header {padding:17px 14px;gap:9px;}.xy-chat-footer {padding-inline:14px;}}
 @media(min-width:821px){.lume-video-toggle {right:182px;}}
 @media(prefers-reduced-motion:reduce){.xy-launcher{transition:none;}}
+
+/* 视频欢迎页：点击进入后展示原网站。 */
+#site-content[hidden], .entry-screen[hidden] { display: none !important; }
+body.entry-active { overflow: hidden; }
+.entry-screen {position:fixed;inset:0;z-index:2000;isolation:isolate;min-height:100svh;overflow:auto;background:#243124;color:#fffdef;font-family:var(--chinese);}
+.entry-video,.entry-shade {position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;}
+.entry-video {object-fit:cover;object-position:center;}
+.entry-shade {background:linear-gradient(180deg,#15241830,#15241818 35%,#10211790),linear-gradient(90deg,#1b2c256e,#1b2c2538);}
+.entry-top,.entry-bottom {position:absolute;left:clamp(24px,4vw,72px);right:clamp(24px,4vw,72px);display:flex;justify-content:space-between;align-items:center;gap:18px;}
+.entry-top {top:clamp(24px,4vh,45px);}
+.entry-wordmark {font:600 19px "DM Sans",sans-serif;letter-spacing:.06em;}
+.entry-wordmark span {margin-left:6px;font-size:9px;font-weight:400;letter-spacing:.17em;opacity:.75;}
+.entry-motion {background:#ffffff10;border:1px solid #ffffff50;border-radius:999px;padding:9px 14px;color:#fffdef;font-size:11px;cursor:pointer;backdrop-filter:blur(12px);}
+.entry-copy {display:flex;min-height:100svh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 24px 115px;}
+.entry-eyebrow {font:400 10px "DM Sans",sans-serif;letter-spacing:.24em;color:#f3f1d5;margin:0 0 25px;text-shadow:0 1px 8px #0008;}
+.entry-copy h1 {font-size:clamp(46px,6vw,84px);font-weight:400;line-height:1.35;letter-spacing:.03em;margin:0 0 25px;text-shadow:0 2px 26px #0003;}
+.entry-copy h1 em {font-style:normal;color:#edf0d1;}
+.entry-description {font-size:13px;line-height:2;color:#fffef0e6;margin:0 0 34px;text-shadow:0 1px 8px #0008;}
+.entry-enter {display:inline-flex;justify-content:center;align-items:center;gap:42px;min-height:55px;padding:0 26px;border:1px solid #e9edce;border-radius:999px;background:#edf0d1;color:#2b392c;font:500 13px var(--chinese);cursor:pointer;transition:transform .2s,background .2s;}
+.entry-enter:hover {transform:translateY(-3px);background:#fffef0;}
+.entry-enter span {font-size:21px;font-weight:400;}
+.entry-bottom {bottom:28px;border-top:1px solid #ffffff45;padding-top:18px;font-size:10px;letter-spacing:.09em;color:#f6f2decc;}
+.entry-enter:focus-visible,.entry-motion:focus-visible {outline:3px solid #f8fbdc;outline-offset:5px;}
+@media(max-width:600px){.entry-video{object-position:64% center;}.entry-copy{padding:112px 20px 120px;}.entry-copy h1{font-size:clamp(40px,11vw,57px);margin-bottom:22px;}.entry-eyebrow{font-size:8px;letter-spacing:.13em;}.entry-description{font-size:12px;}.entry-wordmark span{display:none;}.entry-bottom{font-size:9px;gap:10px;left:22px;right:22px;}.entry-top{left:22px;right:22px;}.entry-motion{font-size:10px;}}
+@media(max-height:600px){.entry-copy{padding-block:85px 90px;}.entry-copy h1{font-size:42px;margin-bottom:12px;}.entry-eyebrow{margin-bottom:12px;}.entry-description{margin-bottom:18px;}.entry-enter{min-height:45px;}.entry-bottom{bottom:18px;padding-top:10px;}}
+@media(prefers-reduced-motion:reduce){.entry-motion{display:none;}.entry-enter{transition:none;}}
+
+/* 欢迎页使用独立森林金毛素材，手机裁切保留小狗。 */
+@media(max-width:600px){
+ .entry-video{object-position:37% center;}
+ .entry-copy{justify-content:flex-start;padding-top:max(100px,14svh);padding-bottom:100px;}
+ .entry-shade{background:linear-gradient(180deg,#10211770,#10211720 55%,#10211785);}
+}
+
+
+/* 林间微光：固定画面，动态光影与少量漂浮光点。 */
+.entry-video { animation: none; transform: none; will-change: auto; }
+.entry-atmosphere {position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.entry-copy {position:relative;z-index:1;}
+.entry-top,.entry-bottom {z-index:2;}
+.entry-haze {position:absolute;inset:-8%;opacity:.16;background:radial-gradient(ellipse at 23% 35%,#fff5ce40,transparent 49%),radial-gradient(ellipse at 72% 65%,#dce8d334,transparent 45%);animation:entry-haze-drift 32s ease-in-out infinite alternate;}
+.entry-ray {position:absolute;inset:-15%;background:linear-gradient(112deg,transparent 20%,#fff4be08 25%,#fff4be22 26%,transparent 32%,transparent 42%,#fff4be12 45%,transparent 52%);transform-origin:24% 0;opacity:.45;animation:entry-ray-breathe 18s ease-in-out infinite alternate;}
+.entry-firefly {position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:#fff4bf;box-shadow:0 0 7px 2px #ffe7a240;opacity:0;animation:entry-firefly-drift var(--duration) linear infinite,entry-firefly-glow 5.8s ease-in-out infinite;animation-delay:var(--delay),var(--delay);will-change:transform;}
+@keyframes entry-haze-drift {from{transform:translate3d(-2%,1%,0);opacity:.12;}to{transform:translate3d(3%,-1%,0);opacity:.22;}}
+@keyframes entry-ray-breathe {from{opacity:.20;transform:rotate(-1deg);}to{opacity:.45;transform:rotate(1deg);}}
+@keyframes entry-firefly-drift {0%{transform:translate3d(0,28px,0);}35%{transform:translate3d(var(--sway),-8px,0);}70%{transform:translate3d(calc(var(--sway) * -.4),-47px,0);}100%{transform:translate3d(4px,-85px,0);}}
+@keyframes entry-firefly-glow {0%,100%{opacity:0;}20%{opacity:.15;}50%{opacity:.62;}80%{opacity:.15;}}
+.entry-screen.is-motion-paused .entry-atmosphere * {animation-play-state:paused!important;}
+@media(max-width:600px){.entry-firefly:nth-of-type(n+11){display:none;}.entry-haze{opacity:.12;}}
+@media(prefers-reduced-motion:reduce){.entry-atmosphere{display:none;}}
