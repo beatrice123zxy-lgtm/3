@@ -1468,3 +1468,41 @@ body.entry-active { overflow: hidden; }
 .reading-figure img {display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:10px;background:#f1eddf;}
 .reading-figure figcaption {margin-top:12px;color:#91977f;font-size:10px;line-height:1.9;text-align:center;letter-spacing:.02em;}
 @media(max-width:600px){.reading-figure {margin-block:28px 34px;}.reading-figure img{border-radius:7px;}.reading-figure figcaption{font-size:9px;padding-inline:5px;}}
+
+/* 文章列表与独立阅读页。 */
+.articles-section {padding-block:78px 90px;border-top:1px solid var(--line);}
+.articles-empty {position:relative;overflow:hidden;padding:42px;border:1px solid #dfe4d4;border-radius:7px;background:linear-gradient(120deg,#eef0e5,#f6f5ec);}
+.articles-empty::after {content:"“";position:absolute;right:38px;top:0;color:#dbe3ce;font:180px Georgia,serif;line-height:1.3;pointer-events:none;}
+.articles-empty-index {position:relative;z-index:1;font:9px var(--sans);letter-spacing:.16em;color:#7b866c;}
+.articles-empty h3 {position:relative;z-index:1;margin:27px 0 13px;font-size:25px;font-weight:500;letter-spacing:-.03em;}
+.articles-empty p {position:relative;z-index:1;margin:0;color:#78806e;font-size:12px;line-height:1.9;}
+.articles-empty-signature {display:inline-block;position:relative;z-index:1;margin-top:30px;font-size:11px;color:#627658;}
+.articles-empty-signature span {margin-left:12px;}
+.article-list-item {display:grid;grid-template-columns:90px minmax(0,1fr) 40px;gap:24px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start;}
+.article-list-item:first-child {border-top:1px solid var(--line);}
+.article-list-meta {padding-top:4px;color:#858c7d;font:10px/1.8 var(--sans);}
+.article-list-item h3 {margin:0 0 11px;font-size:21px;font-weight:500;line-height:1.6;letter-spacing:-.025em;}
+.article-list-item:hover h3 {color:#55744c;}
+.article-list-item p {margin:0;color:#7c8273;font-size:12px;line-height:1.9;}
+.article-list-tags {display:flex;flex-wrap:wrap;gap:8px;margin-top:15px;}
+.article-list-tags span {font-size:9px;padding:3px 8px;border-radius:99px;background:#e8eddf;color:#708161;}
+.article-list-arrow {display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:#647a57;}
+.reading-header {max-width:1120px;margin:auto;padding:27px 36px;display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);align-items:center;}
+.reading-brand {font-size:13px;font-weight:500;}
+.reading-back {font-size:11px;color:#75816a;}
+.reading-main {max-width:760px;margin:auto;padding:78px 36px 100px;}
+.reading-kicker {font:10px var(--sans);letter-spacing:.18em;color:#87917b;margin:0 0 25px;}
+.reading-main h1 {font-size:clamp(29px,4vw,43px);font-weight:500;line-height:1.5;letter-spacing:-.04em;margin:0 0 20px;overflow-wrap:anywhere;}
+.reading-meta {color:#8a9081;font-size:11px;margin-bottom:36px;line-height:2;}
+.reading-summary {font-size:15px;line-height:2;color:#737f68;border-left:2px solid #bdd09f;padding-left:21px;margin:0 0 42px;}
+.reading-body {font-size:15px;line-height:2.1;color:#444e3c;overflow-wrap:anywhere;}
+.reading-body p {margin:0 0 23px;white-space:pre-wrap;}
+.reading-body h2 {font-size:24px;font-weight:500;margin:44px 0 21px;line-height:1.6;}
+.reading-body h3 {font-size:19px;font-weight:500;margin:32px 0 18px;line-height:1.6;}
+.reading-body blockquote {margin:28px 0;padding:19px 25px;background:#eaf0df;border-radius:3px;border-left:2px solid #9ab583;color:#677b55;white-space:pre-wrap;}
+.reading-body ul {padding-left:24px;margin-bottom:25px;}
+.reading-body li {margin-bottom:7px;}
+.reading-end {margin-top:52px;padding-top:25px;border-top:1px solid var(--line);font-size:11px;color:#8a927e;display:flex;justify-content:space-between;gap:20px;}
+.reading-status {padding:55px 0;}
+.reading-status p {font-size:13px;color:#7b8571;line-height:2;}
+@media(max-width:600px){.articles-section {padding-block:62px 68px;}.articles-empty{padding:30px 24px;}.articles-empty h3{font-size:22px;}.articles-empty::after{right:12px;}.article-list-item {grid-template-columns:1fr 30px;gap:7px 14px;padding:25px 0;}.article-list-meta{grid-column:1/-1;}.article-list-item h3{font-size:19px;}.article-list-tags{margin-top:12px;}.reading-header{padding:23px 22px;}.reading-main{padding:53px 24px 70px;}.reading-body{font-size:14px;}.reading-end{flex-direction:column;gap:12px;}}
