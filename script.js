@@ -45,3 +45,114 @@ if (currentYear) {
  document.addEventListener('visibilitychange', syncVideo);
  syncVideo();
 })();
+
+// 自有聊天界面。仅通过后端代理访问 AI；网页中不保存任何 API 密钥。
+(() => {
+  const panel = document.getElementById('xy-chat');
+  const launcher = document.getElementById('xy-launcher');
+  const input = document.getElementById('xy-input');
+  const messages = document.getElementById('xy-messages');
+  const sendButton = document.getElementById('xy-send');
+  const endpoint = document.querySelector('meta[name="xiaoyan-chat-endpoint"]')?.content.trim() || '';
+  const isDemo = !endpoint;
+  let conversationId = '';
+  let userId = crypto.randomUUID();
+  let busy = false;
+  let controller = null;
+  let generation = 0;
+  let returnFocus = launcher;
+  if (!isDemo) {
+    document.getElementById('xy-mode').textContent = 'AI 助手 · 由晓燕设定回答规则';
+    document.getElementById('xy-demo-notice').textContent = '对话将发送至 AI 服务处理，请勿输入密码等敏感信息。';
+  }
+  function addMessage(role, text, error = false) {
+    const article = document.createElement('div');
+    article.className = 'xy-message' + (role === 'user' ? ' xy-message-user' : '') + (error ? ' xy-message-error' : '');
+    const label = document.createElement('span');
+    label.className = 'xy-message-label';
+    label.textContent = role === 'user' ? '你' : isDemo ? '晓燕的小助手 · 示例回复' : '晓燕的 AI 小助手';
+    const body = document.createElement('p');
+    body.textContent = text;
+    article.append(label, body);
+    messages.append(article);
+    messages.scrollTop = messages.scrollHeight;
+    return article;
+  }
+  function welcome() {
+    messages.replaceChildren();
+    addMessage('assistant', '嘿嘿，欢迎来到晓燕的世界！🌿\n我是她的 AI 小助手，可以介绍她的经历、项目和联系方式。你想先了解什么？');
+  }
+  function setOpen(open) {
+    if (open) returnFocus = document.activeElement;
+    panel.hidden = !open;
+    launcher.setAttribute('aria-expanded', String(open));
+    launcher.setAttribute('aria-label', open ? '收起晓燕的 AI 小助手' : '打开晓燕的 AI 小助手');
+    if (open && matchMedia('(min-width:601px)').matches) input.focus({preventScroll:true});
+    if (!open && returnFocus instanceof HTMLElement) returnFocus.focus({preventScroll:true});
+  }
+  function setBusy(value) {
+    busy = value;
+    sendButton.disabled = value;
+    panel.querySelectorAll('[data-xy-question]').forEach(button => button.disabled = value);
+    messages.setAttribute('aria-busy', String(value));
+  }
+  function demoAnswer(question) {
+    if (/联系|邮箱|合作|邮件/.test(question)) return '想联系晓燕，可以发送邮件到 postmaster@zxyagent.com，说明你的想法或合作需求。具体安排由她本人确认哦。';
+    if (/公司|学历|学校|地址|住哪|客户|报价|工资/.test(question)) return '这部分资料暂时还没有补充，我可不能偷偷编出来嘛。你可以发邮件到 postmaster@zxyagent.com，向晓燕本人了解。';
+    if (/项目|作品/.test(question)) return '晓燕平时喜欢研究自己的项目，具体项目资料还在整理中。等她补充好，我再给你介绍，嘿嘿。';
+    if (/介绍|经验|经历|晓燕|是谁/.test(question)) return '郑晓燕有 3 年 AI 产品经理经验，平时喜欢研究自己的项目。嘿嘿，欢迎来到她的世界，一起看看想法怎么慢慢长大吧！';
+    return '嘿嘿，现在是界面演示，我还没有连接 AI，暂时只能展示几条预设回答。你可以试试“介绍一下郑晓燕”或“怎么联系她”。';
+  }
+  async function send(question, appendUser = true) {
+    const text = question.trim();
+    if (!text || busy) return;
+    if (text.length > 1000) return;
+    const run = generation;
+    if (appendUser) addMessage('user', text);
+    input.value = ''; input.style.height = '';
+    setBusy(true);
+    const pending = addMessage('assistant', isDemo ? '正在展示示例回复…' : '正在想想怎么回答你…');
+    try {
+      let answer;
+      if (isDemo) {
+        await new Promise(resolve => setTimeout(resolve, 350));
+        answer = demoAnswer(text);
+      } else {
+        controller = new AbortController();
+        const requestController = controller;
+        const timeout = setTimeout(() => requestController.abort(), 65000);
+        try {
+          const response = await fetch(endpoint, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:text,conversationId,userId}),signal:requestController.signal});
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || '助手暂时没有连接成功，请稍后再试。');
+          if (typeof data.answer !== 'string' || !data.answer.trim()) throw new Error('助手没有返回回答，请稍后重试。');
+          if (run !== generation) return;
+          answer = data.answer;
+          if (typeof data.conversationId === 'string') conversationId = data.conversationId;
+        } finally { clearTimeout(timeout); }
+      }
+      if (run !== generation) return;
+      pending.remove();
+      addMessage('assistant', answer);
+    } catch (error) {
+      if (run !== generation) return;
+      pending.remove();
+      const line = addMessage('assistant', error.name === 'AbortError' ? '这次等待有点久，请稍后重试，也可以直接给晓燕发邮件。' : error.message, true);
+      const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = '重新发送';
+      retry.addEventListener('click', () => { if (!busy) {line.remove(); send(text, false);} });
+      line.append(retry);
+    } finally {if (run === generation) { controller = null; setBusy(false); }}
+  }
+  launcher.addEventListener('click', () => setOpen(panel.hidden));
+  document.getElementById('xy-close').addEventListener('click', () => setOpen(false));
+  document.getElementById('xy-reset').addEventListener('click', () => {
+    generation++; controller?.abort(); controller = null; conversationId = ''; userId = crypto.randomUUID();
+    setBusy(false); welcome();
+  });
+  document.getElementById('xy-form').addEventListener('submit', event => {event.preventDefault();send(input.value);});
+  input.addEventListener('keydown', event => {if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {event.preventDefault();send(input.value);}});
+  input.addEventListener('input', () => {input.style.height = ''; input.style.height = Math.min(input.scrollHeight,90)+'px';});
+  document.querySelectorAll('[data-xy-question]').forEach(button => button.addEventListener('click', () => send(button.dataset.xyQuestion)));
+  panel.addEventListener('keydown', event => {if(event.key === 'Escape') setOpen(false);});
+  welcome();
+})();
