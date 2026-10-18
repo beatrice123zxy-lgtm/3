@@ -1,3 +1,18 @@
+function cleanAssistantAnswer(text) {
+  if (typeof text !== 'string') return '';
+  let value = text;
+  // 只清理模型专用的思考区块；普通回答仍用 textContent 安全显示。
+  value = value.replace(/<think\b[^>]*>[\s\S]*?<\/think\s*>/gi, '');
+  const strayClose = /<\/think\s*>/gi;
+  let match, lastEnd = -1;
+  while ((match = strayClose.exec(value))) lastEnd = strayClose.lastIndex;
+  if (lastEnd >= 0) value = value.slice(lastEnd);
+  value = value.replace(/<think\b[^>]*>[\s\S]*$/gi, '');
+  value = value.replace(/<!--\s*dify-deepseek-reasoning\s*-->[\s\S]*?<!--\s*\/dify-deepseek-reasoning\s*-->/gi, '');
+  value = value.replace(/<!--\s*dify-deepseek-reasoning\s*-->[\s\S]*$/gi, '');
+  return value.trim();
+}
+
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector("#site-nav");
 const currentYear = document.querySelector("#current-year");
@@ -55,15 +70,30 @@ if (currentYear) {
   const sendButton = document.getElementById('xy-send');
   const endpoint = document.querySelector('meta[name="xiaoyan-chat-endpoint"]')?.content.trim() || '';
   const isDemo = !endpoint;
+  const insecurePage = !isDemo && !globalThis.isSecureContext;
+  function createVisitorId() {
+    if (typeof globalThis.crypto?.randomUUID === 'function') return globalThis.crypto.randomUUID();
+    // getRandomValues 在部分不支持 randomUUID 的浏览器中仍然可用。
+    const bytes = new Uint8Array(16);
+    if (typeof globalThis.crypto?.getRandomValues === 'function') globalThis.crypto.getRandomValues(bytes);
+    else for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+    // 仅作为匿名会话标识使用，不承担登录或授权功能。
+    bytes[6] = (bytes[6] & 15) | 64;
+    bytes[8] = (bytes[8] & 63) | 128;
+    const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    return hex.slice(0,8)+'-'+hex.slice(8,12)+'-'+hex.slice(12,16)+'-'+hex.slice(16,20)+'-'+hex.slice(20);
+  }
   let conversationId = '';
-  let userId = crypto.randomUUID();
+  let userId = createVisitorId();
   let busy = false;
   let controller = null;
   let generation = 0;
   let returnFocus = launcher;
   if (!isDemo) {
     document.getElementById('xy-mode').textContent = 'AI 助手 · 由晓燕设定回答规则';
-    document.getElementById('xy-demo-notice').textContent = '对话将发送至 AI 服务处理，请勿输入密码等敏感信息。';
+    document.getElementById('xy-demo-notice').textContent = insecurePage
+      ? '当前页面未使用 HTTPS。窗口可以打开，网站完成 HTTPS 配置后才能连接 AI。'
+      : '对话将发送至 AI 服务处理，请勿输入密码等敏感信息。';
   }
   function addMessage(role, text, error = false) {
     const article = document.createElement('div');
@@ -106,6 +136,7 @@ if (currentYear) {
   async function send(question, appendUser = true) {
     const text = question.trim();
     if (!text || busy) return;
+    if (insecurePage) {addMessage('assistant', '当前页面通过 HTTP 打开，暂不发送对话。请先完成网站的 HTTPS 配置，再使用聊天。', true); return;}
     if (text.length > 1000) return;
     const run = generation;
     if (appendUser) addMessage('user', text);
@@ -127,7 +158,8 @@ if (currentYear) {
           if (!response.ok) throw new Error(data.error || '助手暂时没有连接成功，请稍后再试。');
           if (typeof data.answer !== 'string' || !data.answer.trim()) throw new Error('助手没有返回回答，请稍后重试。');
           if (run !== generation) return;
-          answer = data.answer;
+          answer = cleanAssistantAnswer(data.answer);
+          if (!answer) throw new Error('这次没有收到完整的正式回答，请稍后重试。');
           if (typeof data.conversationId === 'string') conversationId = data.conversationId;
         } finally { clearTimeout(timeout); }
       }
@@ -146,7 +178,7 @@ if (currentYear) {
   launcher.addEventListener('click', () => setOpen(panel.hidden));
   document.getElementById('xy-close').addEventListener('click', () => setOpen(false));
   document.getElementById('xy-reset').addEventListener('click', () => {
-    generation++; controller?.abort(); controller = null; conversationId = ''; userId = crypto.randomUUID();
+    generation++; controller?.abort(); controller = null; conversationId = ''; userId = createVisitorId();
     setBusy(false); welcome();
   });
   document.getElementById('xy-form').addEventListener('submit', event => {event.preventDefault();send(input.value);});
