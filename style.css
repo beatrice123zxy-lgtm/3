@@ -1505,3 +1505,28 @@ body.entry-active { overflow: hidden; }
 .reading-status {padding:55px 0;}
 .reading-status p {font-size:13px;color:#7b8571;line-height:2;}
 @media(max-width:600px){.articles-section {padding-block:62px 68px;}.articles-empty{padding:30px 24px;}.articles-empty h3{font-size:22px;}.articles-empty::after{right:12px;}.article-list-item {grid-template-columns:1fr 30px;gap:7px 14px;padding:25px 0;}.article-list-item h3{font-size:19px;}.article-list-tags{margin-top:12px;}.reading-header{padding:23px 22px;}.reading-main{padding:53px 24px 70px;}.reading-body{font-size:14px;}.reading-end{flex-direction:column;gap:12px;}}
+
+/* Concise resume: project summaries and work experience. */
+.resume-project-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.resume-project {display:flex;flex-direction:column;min-width:0;padding:27px 25px 24px;border:1px solid var(--line);border-radius:12px;background:#f0f2e9;}
+.resume-project:nth-child(2) {background:#eef1e9;}
+.resume-project:nth-child(3) {background:#f4f1e7;}
+.resume-project-top {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:30px;color:#738269;font:11px/1.5 var(--sans);}
+.resume-project-category {font-family:var(--chinese);font-size:10px;}
+.resume-project h3 {margin:0 0 7px;font-size:19px;font-weight:600;line-height:1.6;letter-spacing:-.03em;}
+.resume-project-name {margin:0 0 21px;color:#7c8574;font:10px/1.7 var(--sans);overflow-wrap:anywhere;}
+.resume-project-description {margin:0 0 23px;color:#656e5d;font-size:12px;line-height:2;}
+.resume-project-tags {display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;}
+.resume-project-tags span {padding:4px 8px;border:1px solid rgb(99 119 83 / 14%);border-radius:99px;color:#738269;font-size:9px;}
+.experience-section {padding-block:76px 82px;border-top:1px solid var(--line);}
+.experience-item {display:grid;grid-template-columns:175px minmax(0,1fr);gap:30px;padding:28px 0;border-top:1px solid var(--line);}
+.experience-item:last-child {border-bottom:1px solid var(--line);}
+.experience-period {margin:4px 0 0;color:#7b8572;font:11px/1.8 var(--sans);}
+.experience-title {display:flex;align-items:center;flex-wrap:wrap;gap:9px 18px;margin-bottom:12px;}
+.experience-title h3 {margin:0;font-size:18px;font-weight:500;line-height:1.6;}
+.experience-title span {padding:4px 9px;border-radius:4px;background:#e9ede1;color:#66775a;font-size:10px;}
+.experience-content > p {margin:0;color:#747c6c;font-size:12px;line-height:2;}
+.experience-jump {display:inline-flex;gap:20px;align-items:center;margin-top:23px;color:#55744c;font-size:12px;}
+.experience-jump:hover {text-decoration:underline;}
+@media(max-width:850px){.resume-project-grid {grid-template-columns:1fr;gap:16px;}.resume-project {padding:24px;}.resume-project-top {margin-bottom:18px;}.resume-project-name {margin-bottom:14px;}.resume-project-description {margin-bottom:18px;}.experience-item {grid-template-columns:145px minmax(0,1fr);gap:22px;}}
+@media(max-width:600px){.experience-section {padding-block:62px 68px;}.experience-item {grid-template-columns:1fr;gap:12px;padding:25px 0;}.experience-title {gap:8px 12px;}.experience-title h3 {font-size:17px;}.resume-project h3 {font-size:18px;}}

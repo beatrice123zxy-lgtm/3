@@ -173,8 +173,8 @@ if (currentYear) {
   function demoAnswer(question) {
     if (/联系|邮箱|合作|邮件/.test(question)) return '想联系晓燕，可以发送邮件到 postmaster@zxyagent.com，说明你的想法或合作需求。具体安排由她本人确认哦。';
     if (/公司|学历|学校|地址|住哪|客户|报价|工资/.test(question)) return '这部分资料暂时还没有补充，我可不能偷偷编出来嘛。你可以发邮件到 postmaster@zxyagent.com，向晓燕本人了解。';
-    if (/项目|作品/.test(question)) return '晓燕平时喜欢研究自己的项目，具体项目资料还在整理中。等她补充好，我再给你介绍，嘿嘿。';
-    if (/介绍|经验|经历|晓燕|是谁/.test(question)) return '郑晓燕有 3 年 AI 产品经理经验，平时喜欢研究自己的项目。嘿嘿，欢迎来到她的世界，一起看看想法怎么慢慢长大吧！';
+    if (/项目|作品/.test(question)) return '晓燕做过货运信息管理与系统集成、智能收件箱和询价助手，分别处理物流追踪、业务邮件分派和报价草稿生成。你可以在“项目经历”里看看，嘿嘿。';
+    if (/介绍|经验|经历|晓燕|是谁/.test(question)) return '郑晓燕有 3 年 AI 产品经理经验，曾在华为担任 AI 产品经理助理，在深圳市易仓科技担任 AI 产品经理，关注 AI 与业务自动化。嘿嘿，欢迎来到她的世界！';
     return '嘿嘿，现在是界面演示，我还没有连接 AI，暂时只能展示几条预设回答。你可以试试“介绍一下郑晓燕”或“怎么联系她”。';
   }
   async function send(question, appendUser = true) {
