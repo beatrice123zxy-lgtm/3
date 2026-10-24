@@ -1462,3 +1462,6 @@ body.entry-active { overflow: hidden; }
 .reading-status {padding:55px 0;}
 .reading-status p {font-size:13px;color:#7b8571;line-height:2;}
 @media(max-width:600px){.articles-section {padding-block:62px 68px;}.articles-empty{padding:30px 24px;}.articles-empty h3{font-size:22px;}.articles-empty::after{right:12px;}.article-list-item {grid-template-columns:1fr 30px;gap:7px 14px;padding:25px 0;}.article-list-item h3{font-size:19px;}.article-list-tags{margin-top:12px;}.reading-header{padding:23px 22px;}.reading-main{padding:53px 24px 70px;}.reading-body{font-size:14px;}.reading-end{flex-direction:column;gap:12px;}}
+
+.reading-body a {color:#4f7045;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;}
+.reading-body a:focus-visible {outline:2px solid #66845b;outline-offset:3px;}

@@ -1,5 +1,484 @@
 [
   {
+    "id": "php-old-vulnerabilities-ai",
+    "title": "AI挖出了PHP老漏洞，靠“没人发现”维持的安全还能撑多久？",
+    "date": "2026-10-24",
+    "summary": "AI让长期存在的漏洞更容易被验证和利用。面对PHP老漏洞，产品团队需要重新审视“多年没出事”的判断，把系统排查、维护责任和修复验证落到实处。",
+    "tags": [
+      "个人观点",
+      "AI 与安全",
+      "产品管理"
+    ],
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "一扇十几年没被撬开的门，能说明锁够结实吗？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "也可能只是过去没人愿意花那么多工夫研究它。锁没换，门没修，主人住得久了，慢慢也就觉得：应该没什么问题。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "2026年10月公开的PHP漏洞，让这种侥幸有点站不住脚了。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "研究人员借助AI，把一些长期存在、甚至已经露出过苗头的问题，进一步验证成了可以利用的漏洞。代码还是那些代码，变化的是研究它的工具，以及找到攻击路径所需要的成本。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这件事值得互联网从业者认真看一眼。尤其是那些还在维护老后台、老网站、老业务系统的人。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "因为“我们用了很多年，一直没出事”，以后可能越来越难成为一个让人放心的答案。",
+        "format": "markdown"
+      },
+      {
+        "type": "image",
+        "src": "images/php-ai-old-lock.jpg",
+        "alt": "Q版卡通插图：小机器人用放大镜检查旧木门上的老锁，发现藏在细节里的问题。",
+        "caption": "AI 配图 · 锁一直没被撬开，不等于不需要检查。"
+      },
+      {
+        "type": "heading",
+        "text": "01 出问题的地方，比你的业务代码更底层"
+      },
+      {
+        "type": "paragraph",
+        "text": "10月21日，PHP官方发布安全更新，修复了CVE-2026-109618和CVE-2026-109619。这两项漏洞在特定条件下，可能让没有登录的攻击者远程执行代码。官方列出的修复版本是8.5.12、8.4.27、8.3.36和8.2.35。[PHP官方安全公告](https://www.php.net/archive/2026.php#2026-10-21-5)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "对不写代码的人来说，记住这些编号意义不大。更重要的是弄明白：问题出在哪里。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这次出问题的是PHP运行时，也就是负责把PHP程序真正跑起来的那层软件。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "你的网站业务写得很认真，登录有校验，上传有限制，接口也做过测试，但这些检查不能替代底层软件的安全更新。就像一家餐厅，菜单和服务流程都没问题，不代表厨房里的设备不会出故障。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "因此，看到漏洞消息后，只问一句“我们最近有没有改过代码”，排查范围就已经小了。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "还要往下看：服务用什么语言运行，加载了哪些扩展，依赖什么服务器软件，又用了哪些第三方组件。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "当然，也没必要反过来吓自己。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "有漏洞、漏洞能够被利用、某家公司已经被入侵，这是三件不同的事。使用了PHP，不等于网站已经被攻破；某种部署方式下验证成功，也不等于所有系统都能用同一种办法攻击。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "产品和业务负责人需要的是具体结论：我们哪些服务受影响，哪里对外开放，什么时候能更新，更新以后怎样确认。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "至于“全网沦陷”之类的说法，除了让群聊热闹一点，通常帮不上忙。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这次事件确实出现了发布节奏被打乱的情况。Ubuntu官方说明确认，原定10月22日的协调披露，因为公开泄露提前到了10月21日。[Ubuntu官方说明](https://ubuntu.com/blog/php2shell-vulnerability-fixes-available)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "时间一变，团队之前排好的更新计划也得跟着变。你能不能及时找到负责人、调整发布、通知业务，这时候就看出差别了。",
+        "format": "markdown"
+      },
+      {
+        "type": "heading",
+        "text": "02 AI厉害的地方，不只是“又找到一个漏洞”"
+      },
+      {
+        "type": "paragraph",
+        "text": "有个细节容易被忽略：相关问题并不是到了2026年，才第一次进入人的视线。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "PHP基金会在复盘中承认，2024年开发者已经发现了相关内存问题的线索，但当时没找到具体利用路径。再加上修复方案存在兼容性代价、决策难以推进、人手不足，工作反复停滞。[PHP基金会复盘](https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "从“这里好像不太对”，走到“这里确实会造成严重后果”，往往需要花很长时间。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "代码要读懂，异常要触发，触发之后留下什么状态，还得继续研究。实验失败了，也不能立刻断定这条路走不通。可能方向错了，可能测试条件不对，也可能还缺一个环节。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些事都费人。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "Calif公开的研究过程里，研究人员结合历史线索，引导AI检查内存分配、错误处理和清理流程。发现问题后，又继续追查相似模式。[Calif原始研究](https://calif.io/php2shell/)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "所以，把它讲成“AI自己坐在那里，突然挖出了惊天漏洞”，反而漏掉了最有价值的部分：人怎样提出问题，工具怎样帮助追查，最后又怎样验证。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "Wiz的报告也提到，相关代码存在已超过十年，AI帮助研究人员处理复杂漏洞链、适配不同部署中的差异，减少了分析和调试所需的专业投入。[Wiz研究报告](https://www.wiz.io/blog/php2shell-php-rce)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "对行业来说，这个变化已经足够重要了。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "过去，一些问题因为太难研究、太难复现，被留在待办列表里。继续追下去要花几周还是几个月，没人能保证，也未必有足够的人一直投入。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "现在，其中一部分工作变得更容易推进了。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "防守方能用，攻击方也能用。原先觉得不值得花时间的目标，可能重新变得值得研究。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这不代表AI已经无所不能。但它提醒我们：**“以前太难利用”，只是过去条件下的一次判断，不是一张永久有效的安全证明。**",
+        "format": "markdown"
+      },
+      {
+        "type": "heading",
+        "text": "03 真正让我担心的，是那些“还在用，但已经没人管”的系统"
+      },
+      {
+        "type": "paragraph",
+        "text": "想象一个场景。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "某次营销活动早就结束了，页面不再投放，也没什么人访问。后台却还开着，服务器上的数据库连接信息也还在。最初负责的人换了部门，外包合作到期，后来接手的同事只知道“这个东西先别动”。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这是假设，但你可以拿它去问自己的团队：我们有没有这样的服务？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "它可能没有日活，没有新增收入，在业务报表里也不显眼。所以每次排期，都轮不到它。可它仍然能被访问，仍然接触数据，仍然需要更新。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "“暂时没人用”和“可以不维护”，中间差了很远。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "做移动互联网产品的人，也不能只盯着用户手机里的App。运营后台、内容管理、历史活动页、文件处理服务、外包系统，它们有没有共用账号、网络权限或者数据，都得查清楚。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "主业务不用PHP，不代表相关服务里完全没有PHP。反过来也一样，技术老一些，不代表系统一定危险。有人认真维护的成熟系统，可能比一个上线后就没人过问的新项目更让人放心。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "问题常常出在我们过早地放下心来。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "没有版本记录，却觉得应该不受影响；没查过异常，就觉得没人攻击；更新命令执行完了，就在群里回复“已处理”。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些话听着很熟悉，也很容易让事情到此为止。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "但“没出事”只是一个结果。为什么没出事，我们到底掌握了多少证据？这个问题才值得继续问。",
+        "format": "markdown"
+      },
+      {
+        "type": "heading",
+        "text": "04 补丁发出来了，事情才刚到你手里"
+      },
+      {
+        "type": "paragraph",
+        "text": "从业务视角看，修漏洞似乎很简单：既然有新版本，升级一下不就好了？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "真正开始推进，问题就出来了。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "登录会不会受影响？旧插件还能不能用？支付回调谁来测？能不能停机？更新失败了怎么办？谁有权在晚上拍板发布？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些问题都需要答案。平时没准备，紧急时就只能一边找人，一边补课。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "PHP基金会的复盘提到，底层修复需要权衡兼容性、性能和第三方扩展的影响，并承认此前延误与决策流程、资源不足有关。[PHP基金会复盘](https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "具体到一家公司，也有类似的难处。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "一个缺少回归测试的后台，每次升级都得靠人重新点一遍；一个没有明确负责人的系统，连“要不要改”都得先开会；恢复流程从来没试过，谁也不敢轻易动生产环境。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "因此，发现能力提升了，企业的安全能力却未必同步提升。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "补丁还要被分发、安装、部署，最后进入实际运行的服务。OpenAI对此次事件的协调说明，也把响应工作延伸到了支持部署，而不是停在补丁公开的那一刻。[OpenAI协调说明](https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "产品经理可以在这里做很多事。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "把负责人找到，把业务影响说清楚，把测试范围确定下来，把必要的维护时间放进排期。这些工作没有新功能发布那么显眼，但缺了它们，技术团队很难独自把事情推进到底。",
+        "format": "markdown"
+      },
+      {
+        "type": "heading",
+        "text": "05 下次再看到漏洞新闻，先把这几件事做起来"
+      },
+      {
+        "type": "image",
+        "src": "images/php-maintenance-team.jpg",
+        "alt": "Q版卡通插图：产品经理、工程师和运维人员一起检查清单、修理服务器并确认运行状态。",
+        "caption": "AI 配图 · 找到负责人，完成修复，再确认服务真的更新了。"
+      },
+      {
+        "type": "paragraph",
+        "text": "下面这套做法，是给产品团队的管理建议。涉及配置和更新的具体操作，仍应由研发、运维和安全人员依据官方公告确认。",
+        "format": "markdown"
+      },
+      {
+        "type": "subheading",
+        "text": "先找到服务，也找到人"
+      },
+      {
+        "type": "paragraph",
+        "text": "把App、网站、后台、历史活动页和外包系统列出来。不需要一开始就追求一份特别漂亮的文档，先能用。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "每项服务至少说得清楚：用来做什么，谁负责，运行在哪里，是否对外开放，接触什么数据，平时怎么更新。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这里最值得警惕的，可能不是查出一个旧版本，而是发现一个还在运行、却谁也说不清归谁管的系统。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "先把人和权限找齐。否则下一条安全通知来了，还是只能在群里问：“这个还有人维护吗？”",
+        "format": "markdown"
+      },
+      {
+        "type": "subheading",
+        "text": "别只要一句“没问题”，要知道结论怎么来的"
+      },
+      {
+        "type": "paragraph",
+        "text": "可以直接请技术团队回答：",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "哪些服务确认受影响？哪些确认不受影响？依据是什么？还有哪些没查完？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "“待确认”是一个正常状态，至少它诚实，也能继续安排工作。“应该没事”最麻烦，听着像结论，实际上又没有依据。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "版本判断也别图省事。Linux发行版可能把修复移植到原有版本中，只比较一个简短的PHP版本号，容易判断错。需要核对供应商公告和完整软件包版本。[Ubuntu修复包说明](https://ubuntu.com/blog/php2shell-vulnerability-fixes-available)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "产品经理不需要亲自研究每个软件包，但要让排查留下依据，方便后续复查。",
+        "format": "markdown"
+      },
+      {
+        "type": "subheading",
+        "text": "把优先级和暂缓理由说清楚"
+      },
+      {
+        "type": "paragraph",
+        "text": "不要只按日活大小决定先修谁。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "一个访问量很低、却能接触敏感数据的后台，可能比普通展示页更需要先处理。公网暴露程度、数据范围、服务权限和当前修复状态，都应放进讨论。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "如果业务坚持推迟更新，就把话讲具体：推迟到什么时候，为什么要推迟，期间怎样减少暴露，发生什么情况必须立即调整。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "有人明确承担决定，团队才能继续行动。不能让“最近忙，过阵子再说”成为没有截止日期的安排。",
+        "format": "markdown"
+      },
+      {
+        "type": "subheading",
+        "text": "验收时，确认修复真的跑起来了"
+      },
+      {
+        "type": "paragraph",
+        "text": "“包安装好了”还不够。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "要确认实际提供请求的服务已经使用修复后的组件，并按部署方式完成必要的重启或重部署。Ubuntu公告也提醒，相关应用在更新后可能仍需重启。[Ubuntu更新指引](https://ubuntu.com/blog/php2shell-vulnerability-fixes-available)",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "业务测试则回到真实流程：能否登录、下单、上传、发布内容，关键回调是否正常。测什么，由产品和技术根据服务用途确定。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "还有个容易踩的坑：升级失败后直接退回旧版本，业务恢复了，却把漏洞也带回来了。失败时如何处置，应在发布前就讨论好。",
+        "format": "markdown"
+      },
+      {
+        "type": "subheading",
+        "text": "修完以后，再查一次过去"
+      },
+      {
+        "type": "paragraph",
+        "text": "修复解决的是当前已知问题。此前有没有异常，是另外一项工作。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "如果出现可疑迹象，应由安全人员组织调查、保留证据，并评估账号凭据和数据是否受影响。业务群里没人反馈，不能代替调查结论。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "同时，把这次暴露的维护问题记下来，进入后续排期：哪些系统缺负责人，哪些测试全靠手工，哪些供应商迟迟给不出状态。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "不必等所有事情都改完才算有进步。先让下一次应急少卡住几个地方，就有价值。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "最后，公告还得继续看。截至本文核验的10月24日，PHP官方已在10月23日补充了与会话上传进度有关的说明。只保存10月21日的一张修复版本截图，还不够，后续建议同样需要技术团队核对。[PHP后续公告](https://www.php.net/archive/2026.php#2026-10-23-1)",
+        "format": "markdown"
+      },
+      {
+        "type": "heading",
+        "text": "安全这件事，不能靠印象交差"
+      },
+      {
+        "type": "paragraph",
+        "text": "AI辅助研究也给防守方带来了机会。一些复杂、搁置已久的问题，现在有了新的追查手段，这是好事。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "但工具变强之后，我们判断安全的方式也得跟着变。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "下次听到“这个系统一直挺稳定”，可以再问几句：最近一次更新是什么时候？谁还在维护？现在运行的是什么版本？如果今晚必须修复，哪些准备已经做好？",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些问题不如“AI发现惊天漏洞”吸引眼球，却更接近我们能改变的事情。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "一套系统长期可靠，得有持续维护的证据。有人负责，有更新记录，出了问题找得到人，修完之后查得到结果。",
+        "format": "markdown"
+      },
+      {
+        "type": "paragraph",
+        "text": "至于“没人发现”，那从来就不是我们能控制的事。",
+        "format": "markdown"
+      }
+    ]
+  },
+  {
     "id": "personal-agent-real-need",
     "title": "Personal Agent 是不是伪需求",
     "date": "2026-10-18",

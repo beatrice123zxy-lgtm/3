@@ -15,6 +15,24 @@ function node(tag, text, className) {
   if(className) element.className=className;
   return element;
 }
+export function renderInline(text,container) {
+  // Only opt-in emphasis and HTTPS citations are formatted; never interpret HTML.
+  const pattern=/\*\*([^*]+)\*\*|\[([^\]]+)\]\((https:\/\/[^\s)]+)\)/g;
+  let end=0;
+  for(const match of text.matchAll(pattern)) {
+    if(match.index>end) container.append(node('span',text.slice(end,match.index)));
+    if(match[1]) container.append(node('strong',match[1]));
+    else {
+      let url;
+      try {url=new URL(match[3]);} catch {}
+      if(url?.protocol==='https:') {
+        const link=node('a',match[2]);link.href=url.href;link.rel='noopener noreferrer';container.append(link);
+      } else container.append(node('span',match[0]));
+    }
+    end=match.index+match[0].length;
+  }
+  if(end<text.length) container.append(node('span',text.slice(end)));
+}
 export function renderBlocks(blocks,container) {
   for(const block of blocks) {
     if(!block) continue;
@@ -35,7 +53,9 @@ export function renderBlocks(blocks,container) {
       container.append(list);
     } else {
       const tag={paragraph:'p',heading:'h2',subheading:'h3',quote:'blockquote'}[block.type] || 'p';
-      container.append(node(tag,block.text));
+      const element=node(tag,block.format==='markdown'?undefined:block.text);
+      if(block.format==='markdown') renderInline(block.text,element);
+      container.append(element);
     }
   }
 }
