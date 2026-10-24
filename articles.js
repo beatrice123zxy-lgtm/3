@@ -80,8 +80,7 @@ async function start() {
     list.replaceChildren();
     articles.forEach(article=>{
       const link=node('a',undefined,'article-list-item');link.href=articleUrl(article.id);
-      const content=node('div');content.append(node('h3',article.title),node('p',article.summary));
-      if(article.tags.length){const tags=node('div',undefined,'article-list-tags');article.tags.forEach(t=>tags.append(node('span',t)));content.append(tags);}
+      const content=node('div');content.append(node('h3',article.title));
       const arrow=node('span','↗','article-list-arrow');arrow.setAttribute('aria-hidden','true');link.append(content,arrow);list.append(link);
     });
   }
@@ -93,7 +92,6 @@ async function start() {
     document.querySelector('meta[name="description"]').content=article.summary;
     reader.replaceChildren();reader.append(node('p','WORDS & PERSPECTIVES','reading-kicker'),node('h1',article.title));
     const meta=node('div','文 / 郑晓燕','reading-meta');reader.append(meta);
-    if(article.summary)reader.append(node('p',article.summary,'reading-summary'));
     const body=node('div',undefined,'reading-body');renderBlocks(article.content,body);reader.append(body);
     const end=node('div',undefined,'reading-end');end.append(node('span','文 / 郑晓燕 · 个人观点与思考'));
     const back=node('a','← 返回文章列表');back.href='index.html#articles';end.append(back);reader.append(end);
