@@ -1,5 +1,275 @@
 [
   {
+    "id": "ai-vision-guessing",
+    "title": "我们以为AI在看图，其实它可能只是在猜答案",
+    "date": "2026-10-26",
+    "summary": "从六根手指到异常图像，讨论视觉模型的先验偏见和产品复核方法。",
+    "tags": [],
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "当最聪明的AI，连六根手指都数不清，我们还敢相信它的眼睛吗？"
+      },
+      {
+        "type": "paragraph",
+        "text": "2025年7月，Grok 4发布后，一张六根手指的图片在社交平台X上引发讨论。"
+      },
+      {
+        "type": "paragraph",
+        "text": "有人把图片发给Grok 4，问它有几根手指。"
+      },
+      {
+        "type": "paragraph",
+        "text": "答案是：五根。"
+      },
+      {
+        "type": "paragraph",
+        "text": "原本以为只是一次普通的AI翻车，但更有意思的事情发生了。"
+      },
+      {
+        "type": "paragraph",
+        "text": "原文作者又拿这张图片测试了OpenAI o3、o3 pro、Gemini、Kimi等模型，发现多个模型同样回答五根。"
+      },
+      {
+        "type": "paragraph",
+        "text": "其中，o3 pro据作者记录，推理了48秒，依然答错。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些测试来自作者的个人记录，并非统一条件下的模型评测。但它提出了一个值得思考的问题："
+      },
+      {
+        "type": "paragraph",
+        "text": "为什么AI可以解决复杂的数学题，却可能数不清眼前的六根手指？"
+      },
+      {
+        "type": "image",
+        "src": "images/ai-vision-prior.png",
+        "alt": "Q版机器人看着六根手指的图片，却想到常见的五根手指",
+        "caption": "示意插画：眼前的图像，与模型熟悉的常识，可能发生冲突；并非真实测试截图。"
+      },
+      {
+        "type": "heading",
+        "text": "一、AI不是不会看，而是太相信自己的常识"
+      },
+      {
+        "type": "paragraph",
+        "text": "一篇名为《Vision Language Models are Biased》的论文，揭示了这种现象背后的原因。"
+      },
+      {
+        "type": "paragraph",
+        "text": "研究人员做了一个简单的实验。"
+      },
+      {
+        "type": "paragraph",
+        "text": "大家都知道，阿迪达斯经典标志有三条纹。"
+      },
+      {
+        "type": "paragraph",
+        "text": "研究人员却故意把图片改成四条纹，再交给AI识别。"
+      },
+      {
+        "type": "paragraph",
+        "text": "结果，多个模型依然回答：三条。"
+      },
+      {
+        "type": "paragraph",
+        "text": "类似的事情还发生在动物身上。"
+      },
+      {
+        "type": "paragraph",
+        "text": "研究人员给狗增加第五条腿，给鸟增加第三条腿，再让AI数数。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些模型经常忽略多出来的腿，按照正常动物的样子回答。"
+      },
+      {
+        "type": "paragraph",
+        "text": "论文数据显示，五个受测模型在七类反常图像计数任务中的平均准确率仅为17.05%，其中动物类别更是低至2.12%。"
+      },
+      {
+        "type": "paragraph",
+        "text": "为什么？"
+      },
+      {
+        "type": "paragraph",
+        "text": "因为AI在学习过程中，已经建立了大量固定关联："
+      },
+      {
+        "type": "paragraph",
+        "text": "人通常有五根手指，狗通常有四条腿，阿迪达斯通常有三条纹。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些知识帮助AI理解世界，却也可能干扰它对具体图片的判断。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这叫作先验知识偏见。"
+      },
+      {
+        "type": "paragraph",
+        "text": "说得简单一点："
+      },
+      {
+        "type": "paragraph",
+        "text": "AI有时候不是不知道眼前有什么，而是太相信过去学到的东西。"
+      },
+      {
+        "type": "heading",
+        "text": "二、最危险的不是答错，而是自信地答错"
+      },
+      {
+        "type": "paragraph",
+        "text": "你可能会想，那让AI重新检查一次不就好了？"
+      },
+      {
+        "type": "paragraph",
+        "text": "研究人员也尝试过。"
+      },
+      {
+        "type": "paragraph",
+        "text": "他们要求模型仔细观察、重新确认、只根据图片回答。"
+      },
+      {
+        "type": "paragraph",
+        "text": "结果，平均准确率仅提高约2个百分点。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这说明，问题并不总能通过增加几句提示词解决。"
+      },
+      {
+        "type": "paragraph",
+        "text": "想象一下："
+      },
+      {
+        "type": "paragraph",
+        "text": "一家汽车工厂用AI检查零件，正常零件识别得很准，但某个零件出现了罕见裂缝。"
+      },
+      {
+        "type": "paragraph",
+        "text": "如果模型漏掉了裂缝，还给出“检测合格”的答案，工作人员又没有复核，风险就可能被带到下一道工序。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这只是一个假设场景，但对产品经理而言，已经足够值得警惕。"
+      },
+      {
+        "type": "paragraph",
+        "text": "我们过去常问：AI准确率能达到多少？"
+      },
+      {
+        "type": "paragraph",
+        "text": "现在还应该追问：AI在哪些情况下最容易犯错？犯错之后，谁能发现？"
+      },
+      {
+        "type": "paragraph",
+        "text": "毕竟，95%的准确率听上去不错，可如果剩下的5%恰好发生在最关键的地方，后果可能远超预期。"
+      },
+      {
+        "type": "image",
+        "src": "images/ai-vision-review.png",
+        "alt": "Q版产品经理与机器人复核零件裂缝，将异常零件送入待审核队列",
+        "caption": "示意插画：异常样本、独立检查和人工复核，为模型留出纠错的路。"
+      },
+      {
+        "type": "heading",
+        "text": "三、产品经理该如何应对？记住三个动作"
+      },
+      {
+        "type": "paragraph",
+        "text": "第一，测试时，故意给AI出难题。"
+      },
+      {
+        "type": "paragraph",
+        "text": "不要只拿正常图片做测试。"
+      },
+      {
+        "type": "paragraph",
+        "text": "如果做商品识别，就加入包装相似、标签错误、数量异常的图片；如果做零件检测，就增加微小裂缝、反光、遮挡等情况。"
+      },
+      {
+        "type": "paragraph",
+        "text": "测试集里必须有真实业务中的特殊情况。"
+      },
+      {
+        "type": "paragraph",
+        "text": "第二，别只看总体准确率。"
+      },
+      {
+        "type": "paragraph",
+        "text": "100张图片识别对了95张，不代表产品就能上线。"
+      },
+      {
+        "type": "paragraph",
+        "text": "还要单独统计异常图片的漏检率，尤其关注那些错一次就可能造成较大损失的情况。"
+      },
+      {
+        "type": "paragraph",
+        "text": "第三，给AI留一条纠错的路。"
+      },
+      {
+        "type": "paragraph",
+        "text": "遇到关键判断，不要让模型直接决定最终结果。"
+      },
+      {
+        "type": "paragraph",
+        "text": "可以增加独立检测、人工抽检和异常复核机制。对于无法确定的结果，宁可进入待审核队列，也不要直接放行。"
+      },
+      {
+        "type": "paragraph",
+        "text": "这些动作看起来不够炫酷，却可能比换一个更贵的模型更有价值。"
+      },
+      {
+        "type": "heading",
+        "text": "四、写在最后"
+      },
+      {
+        "type": "paragraph",
+        "text": "六根手指的故事，看起来只是一次有趣的AI翻车。"
+      },
+      {
+        "type": "paragraph",
+        "text": "但它提醒我们，大模型能够回答问题，不代表每个答案都来自准确的观察。"
+      },
+      {
+        "type": "paragraph",
+        "text": "当AI从聊天窗口走进工厂、医院和企业系统，可靠性就不再是可有可无的指标。"
+      },
+      {
+        "type": "paragraph",
+        "text": "真正成熟的AI产品，不是保证模型永远不犯错，而是知道它可能在哪里犯错，并提前做好准备。"
+      },
+      {
+        "type": "paragraph",
+        "text": "未来AI行业比拼的，或许不只是模型能回答多少问题。"
+      },
+      {
+        "type": "paragraph",
+        "text": "还有一个更重要的能力："
+      },
+      {
+        "type": "paragraph",
+        "text": "当AI看错的时候，我们能不能及时发现？"
+      },
+      {
+        "type": "heading",
+        "text": "参考来源"
+      },
+      {
+        "type": "paragraph",
+        "format": "markdown",
+        "text": "[论文：Vision Language Models are Biased](https://arxiv.org/abs/2505.23941)；[作者项目页与实验结果](https://vlmsarebiased.github.io/)；[公开代码与数据说明](https://github.com/anvo25/vlms-are-biased)。文中准确率为该研究特定测试集与受测模型的结果，不代表所有视觉模型的通用表现。"
+      },
+      {
+        "type": "paragraph",
+        "text": "开篇六根手指及48秒推理案例来自作者提供的个人测试记录，未获得可独立核验的原始公开测试链接，不作为统一条件下的模型评测结论。工厂检测部分为假设场景。"
+      }
+    ]
+  },
+  {
     "id": "php-old-vulnerabilities-ai",
     "title": "AI挖出了PHP老漏洞，靠“没人发现”维持的安全还能撑多久？",
     "date": "2026-10-24",
